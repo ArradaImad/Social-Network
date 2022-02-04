@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './Components/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import "@material-tailwind/react/tailwind.css";
+import './index.css';
+
 
 ReactDOM.render(
   <React.StrictMode>
