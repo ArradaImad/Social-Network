@@ -5,6 +5,7 @@ import Header from "./Header";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
+import Postform from "./Postform";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/postform" element={<Postform />} />
             <Route path="*" 
               element={
                 <main style={{ padding: "1rem" }}>
