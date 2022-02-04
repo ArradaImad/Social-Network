@@ -1,34 +1,30 @@
 
 import React from "react";
 import { Link, Outlet, Route, Routes } from "react-router-dom";
+import Header from "./Header";
 import Home from "./Home";
 import Login from "./Login";
-
+import Register from "./Register";
 
 function App() {
+
   return (
-    <div className="min-h-screen">
-      <nav className="fixed top-0 w-full bg-slate-800 h-16 flex items-center">
-        <div className="container mx-auto space-x-8 text-white ">
-          <Link to="/">Home</Link>
-          <Link to="/login">Login</Link>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-slate-50 flex flex-col relative">
+      <Header/>
       <Outlet />
-      <div>
-      <div className="mt-16">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="*" 
-            element={
-              <main style={{ padding: "1rem" }}>
-                <p>There's nothing here!</p>
-              </main>
-            }
-          />
-        </Routes>
-      </div>
+      <div className="grow flex flex-col">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" 
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
+          </Routes>
       </div>
     </div>
   );
