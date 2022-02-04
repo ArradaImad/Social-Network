@@ -1,56 +1,42 @@
-import React from "react";
-import Card from "@material-tailwind/react/Card";
-import CardHeader from "@material-tailwind/react/CardHeader";
-import CardBody from "@material-tailwind/react/CardBody";
-import CardFooter from "@material-tailwind/react/CardFooter";
-import InputIcon from "@material-tailwind/react/InputIcon";
-import Button from "@material-tailwind/react/Button";
-import H5 from "@material-tailwind/react/Heading5";
-import { Link } from "react-router-dom";
+import { TextField, OutlinedInput, Button, Typography  } from "@mui/material";
+import React, { useState } from "react";
+import { Link, useNavigate  } from "react-router-dom";
+import { login } from "../lib/social-network-library";
 
 function Login() {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = async () => {
+        let result = await login(email, password); // Utilisation de la fonction login
+    
+        if (!result) {
+            throw new Error(`Error while registering : ${result}`)
+        }
+
+        console.log(result);
+
+        // Redirection vers Home / Page de profil de l'utilisateur
+        if (result.success) {
+            navigate("/");
+        }
+    }
+
     return (
         <div className="grow flex flex-col justify-center items-center">
-            <div className="max-w-lg w-full bg-sky-50 shadow-md rounded-lg">
-                <Card>
-                    <CardHeader color="lightBlue" size="md">
-                        <H5 color="white">Login</H5>
-                    </CardHeader>
-
-                    <CardBody>
-                        <div className="mt-4 mb-8 px-4">
-                            <InputIcon
-                                type="email"
-                                color="lightBlue"
-                                placeholder="Email Address"
-                                iconName="email"
-                            />
-                        </div>
-                        <div className="mb-4 px-4">
-                            <InputIcon
-                                type="password"
-                                color="lightBlue"
-                                placeholder="Password"
-                                iconName="lock"
-                            />
-                        </div>
-                    </CardBody>
-                    <CardFooter>
-                        <div className="flex justify-center mb-2">
-                            <Button
-                                color="lightBlue"
-                                buttonType="link"
-                                size="lg"
-                                ripple="dark"
-                            >
-                                Sign In
-                            </Button>
-                        </div>
-                        <div className="flex justify-center">
-                            <p className="text-sm text-gray-600">Don't have an account yet? <Link to="/register"><span className="underline font-bold">Sign up</span></Link></p>
-                        </div>
-                    </CardFooter>
-                </Card>
+            <div className="max-w-lg w-full shadow-md rounded-lg p-8">
+                <Typography variant="h2" align="center" gutterBottom component="div">
+                    Login
+                </Typography>
+                <div className="flex flex-col space-y-4">
+                    <TextField value={email} onChange={(e) => setEmail(e.target.value)} id="email" label="Email"  variant="outlined" />
+                    <TextField value={password} onChange={(e) => setPassword(e.target.value)} id="password" label="Password" type="password" autoComplete="current-password"/>
+                </div>
+                <div className="mt-6 flex flex-col justify-center">
+                    <Button variant="text" onClick={handleLogin}>Sign up</Button>
+                    <p className="text-sm text-center">Don't have an account yet? <span className="underline font-bold"><Link to="/register">Sign up</Link></span></p>
+                </div>
             </div>
         </div>
     );
