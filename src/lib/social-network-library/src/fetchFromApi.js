@@ -3,7 +3,8 @@
  */
 
 /* Import */
-import { apiUrl } from "../config.json";
+import config from "../config.json";
+const apiUrl = config.apiUrl;
 
 /**
  * Fetch from api
