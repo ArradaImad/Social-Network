@@ -12,7 +12,7 @@ function Login() {
         let result = await login(email, password); // Utilisation de la fonction login
     
         if (!result) {
-            throw new Error(`Error while registering : ${result}`)
+            throw new Error(`Error while login : ${result}`)
         }
 
         console.log(result);
