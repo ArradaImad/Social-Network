@@ -4,6 +4,7 @@ import { Link, Outlet, Route, Routes } from "react-router-dom";
 import Header from "./Header";
 import Home from "./Home";
 import Login from "./Login";
+import Profile from "./Profile";
 import Register from "./Register";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" 
               element={
                 <main style={{ padding: "1rem" }}>
