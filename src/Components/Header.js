@@ -72,10 +72,13 @@ const Header = () => {
               }}
             >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link to="/login">Home</Link></Typography>
+                  <Typography textAlign="center"><Link to="/">Home</Link></Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link to="/login">Login</Link></Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center"><Link to="/postform">Create post</Link></Typography>
                 </MenuItem>
             </Menu>
           </Box>
@@ -92,13 +95,20 @@ const Header = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Link to="/login">Home</Link>
+                <Link to="/">Home</Link>
               </Button>
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 <Link to="/login">Login</Link>
+              </Button>
+
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                <Link to="/postform">Create publication</Link>
               </Button>
           </Box>
 
