@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCurrentUserProfile, getPosts } from "../lib/social-network-library";
-import { updateCurrentUserProfile } from "../lib/social-network-library";
+import { getCurrentUserProfile, getPosts, updateCurrentUserProfile, isUserLoggedIn } from "../lib/social-network-library";
 import { Button, Typography, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Avatar } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faIdCard, faBirthdayCake, faBuilding, faAt } from '@fortawesome/free-solid-svg-icons';
@@ -113,6 +112,9 @@ export function stringAvatar(name, size) {
 
 
 function Profile() {
+
+    const isLoggedIn = isUserLoggedIn();
+
     const [userInfos, setUserInfos] = useState();
     const [recentPosts, setRecentPosts] = useState([]);
 
@@ -172,6 +174,7 @@ function Profile() {
     const displayUserInfos = (user) => {
         return (
             <>
+                { isLoggedIn ? 
                 <div className='absolute top-0 right-0 mt-6 mr-6'>
                     <Button
                         size="small"
@@ -183,6 +186,7 @@ function Profile() {
                         Edit
                     </Button>
                 </div>
+                : '' }
                 <div className="flex flex-col items-center space-y-8">
                     <Avatar
                         alt={user.firstname + ' ' + user.lastname}
@@ -220,7 +224,7 @@ function Profile() {
         return (
             <div className="flex flex-col space-y-6">
                 {recentPosts.map(post =>
-                    <Post key={post._id} post={post} />
+                    <Post key={post._id} post={post} currentUser={userInfos}/>
                 )}
 
                 <Button sx={{ my: 2, color: 'primary', display: 'block' }}>

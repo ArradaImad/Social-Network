@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { Avatar, Button, Popover, Typography, IconButton } from "@mui/material";
+import { Avatar, Button, Popover, Typography, IconButton, Collapse, TextField } from "@mui/material";
 import { stringAvatar, LoadingProfile } from "./Profile";
-import { getUserProfile, addLike } from "../lib/social-network-library";
+import { getUserProfile, addLike, addComment } from "../lib/social-network-library";
 import ProfileMini from "./ProfileMini";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faComments, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 
 function Post(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [author, setAuthor] = useState();
+    const [toggleCommentsSection, setToggleCommentsSection] = useState(false);
+    const [comment, setComment] = useState("");
 
     const handlePopoverOpen = async (event) => {
         setAnchorEl(event.currentTarget);
@@ -38,8 +40,18 @@ function Post(props) {
     };
 
     const handleClickComment = () => {
-
+        setToggleCommentsSection(!toggleCommentsSection);
     };
+
+    const handleSendComment = async() => {
+        let result = await addComment(props.post._id, comment);
+
+        if (!result) {
+            throw new Error(`Error while commenting post : ${result}`);
+        }
+
+        console.log(result);
+    }
 
     const openPopover = Boolean(anchorEl);
     const date = new Date(props.post.date).toLocaleDateString();
@@ -82,28 +94,86 @@ function Post(props) {
                 </div>
             </div>
             <div className="mt-4 flex flex-col pb-4 border-b border-gray-200">
-                <h5 className="font-semibold">{props.post.title}</h5>
+                <h5 className="font-semibold text-lg">{props.post.title}</h5>
                 <div>{props.post.content}</div>
             </div>
-            <div className="flex space-x-4 py-4">
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<FontAwesomeIcon icon={faThumbsUp} />}
-                    onClick={handleClickLike}
-                >
-                    Like
-                </Button>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<FontAwesomeIcon icon={faComments} />}
-                    onClick={handleClickComment}
-                >
-                    Comments
-                </Button>
+            <div className="flex justify-between items-center">
+                <div className="w-full h-full space-x-4">
+                    <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<FontAwesomeIcon icon={faThumbsUp} />}
+                        onClick={handleClickLike}
+                    >
+                        Like
+                    </Button>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<FontAwesomeIcon icon={faComments} />}
+                        onClick={handleClickComment}
+                    >
+                        Comments
+                    </Button>
+                </div>
+                <div className="justify-self-end">
+                    <IconButton color="primary">
+                        <span className="mr-2">{props.post.comments.length}</span>
+                        <FontAwesomeIcon icon={faHeart} />
+                    </IconButton>
+                </div>
+            </div>
+            <div className="">
+                <Collapse in={toggleCommentsSection}>
+                    <div className="py-4 flex flex-col space-y-4">
+                        {props.post.comments.map((c, index) => 
+                            <div className="flex items-center space-x-4" key={c._id}>
+                                <Avatar
+                                    alt={c.firstname + ' ' + c.lastname}
+                                    sx={{ width: 64, height: 64, fontSize: 24 }}
+                                    {...stringAvatar(c.firstname.toUpperCase() + ' ' + c.lastname.toUpperCase(), 36)}
+                                />
+                                <div className="flex flex-col bg-slate-200 rounded p-4">
+                                    <h6 className="font-bold text-sm mb-2">{c.firstname + " " + c.lastname}</h6>
+                                    <div className="">
+                                        {c.content}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        <div className="flex items-center space-x-4">
+                            <Avatar
+                                alt={props.currentUser.firstname + ' ' + props.currentUser.lastname}
+                                sx={{ width: 64, height: 64, fontSize: 24 }}
+                                {...stringAvatar(props.currentUser.firstname.toUpperCase() + ' ' + props.currentUser.lastname.toUpperCase(), 36)}
+                            />
+                            <TextField
+                                autoFocus
+                                size="small"
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                margin="dense"
+                                id="comment"
+                                name="comment"
+                                label="Your comment"
+                                type="text"
+                                variant="outlined"
+                                fullWidth
+                            />
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                startIcon={<FontAwesomeIcon icon={faComments} />}
+                                onClick={handleSendComment}
+                                className="p-2"
+                            >
+                                Send
+                            </Button>
+                        </div>
+                    </div>
+                </Collapse>
             </div>
         </div>
     );
